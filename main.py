@@ -1,13 +1,16 @@
 from telethon import TelegramClient, events
+from telethon.sessions import StringSession
 import os
 
 api_id = int(os.getenv("TELEGRAM_API_ID"))
 api_hash = os.getenv("TELEGRAM_API_HASH")
+session_string = os.getenv("TELEGRAM_SESSION")
 
-# Persistent disk mount path
-session_path = "/var/data/kemal_session"
-
-client = TelegramClient(session_path, api_id, api_hash)
+client = TelegramClient(
+    StringSession(session_string),
+    api_id,
+    api_hash
+)
 
 SOURCE_CHAT = -1003485696251
 TARGET_CHAT = -1003824688558
@@ -26,7 +29,7 @@ async def handler(event):
     print("-----")
 
 async def main():
-    print("Bot çalışıyor... Kaynak gruptaki tüm metin mesajları hedef gruba kopyalanacak.")
+    print("Bot çalışıyor...")
 
 with client:
     client.loop.run_until_complete(main())
